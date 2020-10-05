@@ -1,0 +1,10 @@
+^C:\USERS\TEORU\_PROJECTS\COURSEWORK\CMAKELISTS.TXT
+setlocal
+C:\Users\teoru\__global_programs\cmake\bin\cmake.exe -SC:/Users/teoru/_projects/coursework -BC:/Users/teoru/_projects/coursework/build --check-stamp-file C:/Users/teoru/_projects/coursework/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

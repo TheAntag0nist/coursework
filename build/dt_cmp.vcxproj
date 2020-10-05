@@ -305,12 +305,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\message.c" />
     <ClInclude Include="C:\Users\teoru\_projects\coursework\headers\message.h" />
-    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\compress.c" />
     <ClInclude Include="C:\Users\teoru\_projects\coursework\headers\compress.h" />
-    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\basic_structures.c" />
     <ClInclude Include="C:\Users\teoru\_projects\coursework\headers\basic_structures.h" />
+    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\message.c" />
+    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\compress.c" />
+    <ClCompile Include="C:\Users\teoru\_projects\coursework\headers\basic_structures.c" />
     <ClCompile Include="C:\Users\teoru\_projects\coursework\main.c" />
   </ItemGroup>
   <ItemGroup>

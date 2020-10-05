@@ -1,0 +1,10 @@
+^C:\USERS\TEORU\_PROJECTS\COURSEWORK\BUILD\CMAKEFILES\9CD06EFB4AEB0D62772CC767C0576829\GENERATE.STAMP.RULE
+setlocal
+C:\Users\teoru\__global_programs\cmake\bin\cmake.exe -SC:/Users/teoru/_projects/coursework -BC:/Users/teoru/_projects/coursework/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/teoru/_projects/coursework/build/dt_cmp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
