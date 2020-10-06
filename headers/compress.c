@@ -24,10 +24,8 @@ void free_list();
 //________________________SIMPLE_VERSION_COMPRESS__________________________
 //-------------------------------------------------------------------------
 char find_ch(char byte){
-    char res;
+    unsigned char res;
     int i, n = 0;
-
-    //printf("%s", dict);
 
     for( i = 0; i < SIZE_DICT; ++i){
         if(dict[i] == byte){
@@ -38,17 +36,18 @@ char find_ch(char byte){
         tmp[i - n + 1] = dict[i];
     }
 
+    // move to front char in dictionary
     tmp[0] = byte;
     for( i = 0; i < sizeof(dict); ++i)
         dict[i] = tmp[i];
 
-    //printf("\t%s\t%c",dict, byte);
+    printf("res = %d\n",res);
     return res; 
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 void open_file(){
-    output = fopen("output.mtf","wb+");
+    output = fopen("output","wb");
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
@@ -59,9 +58,17 @@ void mtf_encode_simple(char byte){
     char res;
 
     res = find_ch(byte);
-    printf("\t%d\n",res);
 
-    fprintf(output,"%c" ,res); 
+    fprintf(output,"%c" ,res);
+}
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+void mtf_decode_simple(char byte){
+    printf("res = %d\n",dict[byte]);
+    fprintf(output,"%c" ,dict[byte]);
+
+    // move to front char in dictionary
+    find_ch(dict[byte]);
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------

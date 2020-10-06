@@ -64,15 +64,18 @@ int main(int argc,char* argv[]){
             }
 
             // reaction --> starts transform file
-            if((reaction & 4) || (reaction & 8)){
+            if((reaction & 4) || (reaction & 8) || (reaction & 16)){
                 inf_message(source, '+', "source -> ");
 
                 if((reaction & 8) == 8)
                     compress(source, 'l');
-                else if((reaction & 4) == 4){
+                else if((reaction & 4) == 4)
                     compress(source, 's');
-                }
-
+                
+                if(reaction & 16)
+                    compress(source, 'w');
+                
+                reaction &= ~16;
                 reaction &= ~8;
                 reaction &= ~4;
             }
@@ -105,11 +108,12 @@ int main(int argc,char* argv[]){
             // priority
             // 1. list
             // 2. simple
-            if((reaction & 8) == 8)
+            if(reaction & 8)
                 compress(source, 'l');
-            else if((reaction & 4) == 4){
+            else if(reaction & 4)
                 compress(source, 's');
-            }
+            else if(reaction & 16)
+                compress(source, 'w');
         }
     }
 
@@ -150,20 +154,19 @@ int compress(char *src, char flag){
 
     // write bytes from file in console
     while(fread( &byte, sizeof(byte), 1, cmp_file) != 0){
-        printf("\t%c",byte);
-
+        printf("\tbyte = %d\t",byte);
         // s - simple encode (mtf)
         // w - simple decode 
         // l - encode using list
         // o - decode using list
 
         if(flag == 's')
-            mtf_encode_simple(byte);
+            mtf_encode_simple( byte);
         else if(flag == 'l')
             mtf_encode_list(byte);
-        else if(flag == 'o')
-            break;
         else if(flag == 'w')
+            mtf_decode_simple(byte);
+        else if(flag == 'o')
             break;
     }
 
