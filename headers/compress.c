@@ -41,7 +41,6 @@ char find_ch(char byte){
     for( i = 0; i < sizeof(dict); ++i)
         dict[i] = tmp[i];
 
-    printf("res = %d\n",res);
     return res; 
 }
 //-------------------------------------------------------------------------
@@ -59,20 +58,33 @@ void mtf_encode_simple(char byte){
 
     res = find_ch(byte);
 
+    printf("res = %d\n", res);
     fprintf(output,"%c" ,res);
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 void mtf_decode_simple(char byte){
-    printf("res = %d\n",dict[byte]);
     fprintf(output,"%c" ,dict[byte]);
 
+    printf("res = %d\n", dict[byte]);
     // move to front char in dictionary
     find_ch(dict[byte]);
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
+void restore_dict(){
+    int i;
+
+    for( i = 0; i < SIZE_DICT; ++i)
+        dict[i] =(char) i;
+
+    return;
+}
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 void free_data(char flag){
+    restore_dict();
+
     if(flag == 'l')
         free_list();
     fclose(output);

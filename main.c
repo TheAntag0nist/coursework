@@ -16,10 +16,6 @@
 #define false 0
 #define null 0
 //-------------------------------------------------------------------------
-//___________________________GLOBAL__ZONE__________________________________
-//-------------------------------------------------------------------------
-char* time;
-//-------------------------------------------------------------------------
 //_________________________PROTOTYPE__ZONE_________________________________
 //-------------------------------------------------------------------------
 int compress(char *src, char flag);
@@ -34,7 +30,6 @@ int main(int argc,char* argv[]){
     // allocate memory for src
     source = errch_malloc(SRC_SIZE);
     command = errch_malloc(COMM_SIZE);
-    time = errch_malloc(TIME_SIZE);
 
     inf_message("start work dt_compress",'+',"");
 
@@ -106,8 +101,9 @@ int main(int argc,char* argv[]){
             inf_message(source, '+', "source -> ");
 
             // priority
-            // 1. list
-            // 2. simple
+            // 1 - encode
+            // 1.1 list
+            // 1.2 simple
             if(reaction & 8)
                 compress(source, 'l');
             else if(reaction & 4)
@@ -122,15 +118,18 @@ int main(int argc,char* argv[]){
     // freee mem
     free(source);
     free(command);
-    free(time);
 }
 //-------------------------------------------------------------------------
 //__________________________COMPRESS___FUNCTION____________________________
 //-------------------------------------------------------------------------
 int compress(char *src, char flag){
     FILE* cmp_file;
+    char* time;
     int size_of_file = 0;
     char byte;
+
+    // allocate memory for time
+    time = errch_malloc(TIME_SIZE);
 
     // open fo read as byte file
     cmp_file = fopen(src,"rb");
@@ -148,9 +147,9 @@ int compress(char *src, char flag){
         inf_message("successfull create list",'+',"");
     }
 
-    //if(!get_time(time))
-    //    fatal("can't get time...");
-    //inf_message(time,'t', "");
+    // display current time
+    get_time(time);
+    inf_message(time,'t', "");
 
     // write bytes from file in console
     while(fread( &byte, sizeof(byte), 1, cmp_file) != 0){
@@ -175,6 +174,7 @@ int compress(char *src, char flag){
     printf("\n");
     inf_message("successful transform",'+',"");
     // end programm
+    free(time);
     fclose(cmp_file);
     return 0;
 }

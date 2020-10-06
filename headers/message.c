@@ -142,7 +142,7 @@ void* errch_malloc(unsigned int mem_size){
 //-------------------------------------------------------------------------
 int arg_prog(char* message){
     if(!strcmp(message,"-version")){
-        inf_message("  dt_compress (DT_COMPRESS) v1.1.2\n\t\t Project for encoding, decoding and archive data.",'d',"");
+        inf_message("  dt_compress (DT_COMPRESS) v1.1.8\n\t\t Project for encoding, decoding and archive data.",'d',"");
         return 0;
     }
     else if(!strcmp( message, "--src") || !strcmp( message, "src"))
@@ -172,34 +172,38 @@ int arg_prog(char* message){
 int get_time(char* time_tmp){
     time_t timer; 
     struct tm* tm_info;
-    char day[3]; 
-    char month[3]; 
-    char year[5];
-    char hour[3];
-    char min[3]; 
+    char tmp[5]; 
 
     // get current time
     time(&timer); 
     tm_info = localtime(&timer); 
  
     // get time info
-    strftime(day, 3, "%d", tm_info); 
-    strftime(month, 3, "%m", tm_info); 
-    strftime(year, 5, "%Y", tm_info);
-    strftime(hour, 3, "%H", tm_info);
-    strftime(min, 3, "%M", tm_info); 
+    // and save info in my own format
+    strftime(tmp, 3, "%d", tm_info);
 
-    // save info in my own format
     strcpy(time_tmp,"[");
-    strcat(time_tmp, day);
+    strcat(time_tmp, tmp);
+
+    strftime(tmp, 3, "%m", tm_info); 
+
     strcat(time_tmp,":");
-    strcat(time_tmp, month);
+    strcat(time_tmp, tmp);
+
+    strftime(tmp, 5, "%Y", tm_info);
+
     strcat(time_tmp,":");
-    strcat(time_tmp, year);
+    strcat(time_tmp, tmp);
+
+    strftime(tmp, 3, "%H", tm_info);
+
     strcat(time_tmp, " ");
-    strcat(time_tmp, hour);
+    strcat(time_tmp, tmp);
+
+    strftime(tmp, 3, "%M", tm_info); 
+
     strcat(time_tmp,":");
-    strcat(time_tmp, min);
+    strcat(time_tmp, tmp);
     strcat(time_tmp,"] ");
 
     return 0;
