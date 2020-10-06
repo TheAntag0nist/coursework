@@ -145,50 +145,60 @@ int arg_prog(char* message){
         inf_message("  dt_compress (DT_COMPRESS) v1.1.2\n\t\t Project for encoding, decoding and archive data.",'d',"");
         return 0;
     }
-    else if(!strcmp( message, "-src") || !strcmp( message, "src"))
+    else if(!strcmp( message, "--src") || !strcmp( message, "src"))
         return 1;
-    else if(!strcmp( message, "-time") || !strcmp( message, "time"))
+    else if(!strcmp( message, "--time") || !strcmp( message, "time"))
         return 2;
-    else if(!strcmp( message, "-mtf") || !strcmp( message, "mtf"))
+    else if(!strcmp( message, "--mtf") || !strcmp( message, "mtf"))
         return 4;
-    else if(!strcmp( message, "-mtf_list") || !strcmp( message, "mtf_list"))
+    else if(!strcmp( message, "--mtf_list") || !strcmp( message, "mtf_list"))
         return 8;
-    else if(!strcmp( message, "-help") || !strcmp( message, "help")){
-        inf_message("this is list of commands (commands are entered sequentially)",'+',"");
-        printf("\t-src (src) - source on file that need compress or transform\n\t-mtf (mtf) - transform file (src) using move-to-front(stack of books)\n\t-mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n\t-help (help) - display info about commands\n\t-exit (exit) - exit from programm\n");
-    }
-    else if(!strcmp( message, "-exit") || !strcmp( message, "exit")){
+    else if(!strcmp( message, "--exit") || !strcmp( message, "exit")){
         inf_message("exit from program",'c',"");
         getchar();
-        exit(0); 
+        return 512; 
+    }
+    else if(!strcmp( message, "--help") || !strcmp( message, "help")){
+        inf_message("this is list of commands (commands are entered sequentially and separately)",'+',"");
+        printf("\t--src (src) - source on file that need compress or transform\n\t--mtf (mtf) - transform file (src) using move-to-front(stack of books)\n\t--mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n\t--help (help) - display info about commands\n\t--exit (exit) - exit from programm\n");
     }
     else
-        return 0;
+        return 1024;
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
-char* get_time(){
+int get_time(char* time_tmp){
     time_t timer; 
     struct tm* tm_info;
-    char* temp = errch_malloc(18);
     char day[3]; 
     char month[3]; 
-    char year[5]; 
- 
+    char year[5];
+    char hour[3];
+    char min[3]; 
+
+    // get current time
     time(&timer); 
     tm_info = localtime(&timer); 
  
+    // get time info
     strftime(day, 3, "%d", tm_info); 
     strftime(month, 3, "%m", tm_info); 
-    strftime(year, 5, "%Y", tm_info); 
+    strftime(year, 5, "%Y", tm_info);
+    strftime(hour, 3, "%H", tm_info);
+    strftime(min, 3, "%M", tm_info); 
 
-    strcpy(temp,"[");
-    strcat(temp, day);
-    strcat(temp,":");
-    strcat(temp, month);
-    strcat(temp,":");
-    strcat(temp, year);
-    strcat(temp,"] ");
+    // save info in my own format
+    strcpy(time_tmp,"[");
+    strcat(time_tmp, day);
+    strcat(time_tmp,":");
+    strcat(time_tmp, month);
+    strcat(time_tmp,":");
+    strcat(time_tmp, year);
+    strcat(time_tmp, " ");
+    strcat(time_tmp, hour);
+    strcat(time_tmp,":");
+    strcat(time_tmp, min);
+    strcat(time_tmp,"] ");
 
-    return temp;
+    return 0;
 }

@@ -5,4 +5,4 @@ void inf_message(char* message,char flag_sym, char* add_str);
 void fatal(char* message);
 void* errch_malloc(unsigned int mem_size);
 int arg_prog(char* message);
-char* get_time();
+int get_time(char* time_tmp);
