@@ -10,20 +10,22 @@
 //___________________________DEFINE__ZONE__________________________________
 //-------------------------------------------------------------------------
 #define SRC_SIZE 256
-#define TIME_SIZE 22
+#define TIME_SIZE 32
 #define COMM_SIZE 32
+#define NAME_FILE_SIZE 64
 #define true 1
 #define false 0
 #define null 0
 //-------------------------------------------------------------------------
 //_________________________PROTOTYPE__ZONE_________________________________
 //-------------------------------------------------------------------------
-int compress(char *src, char flag);
+int compress(char *src, char *file_name, char flag);
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 int main(int argc,char* argv[]){
     char *source,
          *command;
+    char file_name[NAME_FILE_SIZE];
     int reaction = 0,
         i = 0;
 
@@ -31,6 +33,7 @@ int main(int argc,char* argv[]){
     source = errch_malloc(SRC_SIZE);
     command = errch_malloc(COMM_SIZE);
 
+    file_name[0] = null;
     inf_message("start work dt_compress",'+',"");
 
     // read commands
@@ -40,7 +43,8 @@ int main(int argc,char* argv[]){
         // while not exit command
         while(true){
             printf("dt_compress > ");
-            scanf("%s",command);
+            if(scanf("%s",command) == EOF)
+                fatal("error in command");
 
             // save reaction on command
             reaction += arg_prog(command);
@@ -49,7 +53,9 @@ int main(int argc,char* argv[]){
             if(reaction & 1){
                 inf_message("enter src",'e',"");
                 printf("\tsrc --> ");
-                scanf("%s",source);
+                if(scanf("%s",source) == EOF){
+                    fatal("error in input data");
+                }
                 
                 reaction &= ~1;
             }
@@ -63,16 +69,25 @@ int main(int argc,char* argv[]){
                 inf_message(source, '+', "source -> ");
 
                 if((reaction & 8) == 8)
-                    compress(source, 'l');
+                    compress(source, file_name, 'l');
                 else if((reaction & 4) == 4)
-                    compress(source, 's');
+                    compress(source, file_name, 's');
                 
                 if(reaction & 16)
-                    compress(source, 'w');
+                    compress(source, file_name, 'w');
                 
                 reaction &= ~16;
                 reaction &= ~8;
                 reaction &= ~4;
+            }
+
+            if(reaction & 256){
+                inf_message("enter file_name",'e',"");
+                printf("\tf_name --> ");
+                if(scanf("%s",file_name) == EOF)
+                    fatal("error in input data");
+
+                reaction &= ~256;
             }
                 
             // reaction --> exit reaction
@@ -96,6 +111,12 @@ int main(int argc,char* argv[]){
             }
         }
 
+        if(reaction & 256){
+            strcpy( file_name,argv[i+1]);
+
+            reaction &= ~256;
+        }
+
         // reaction --> starts transform file
         if((reaction & 4) || (reaction & 8)){
             inf_message(source, '+', "source -> ");
@@ -104,12 +125,14 @@ int main(int argc,char* argv[]){
             // 1 - encode
             // 1.1 list
             // 1.2 simple
+            // 2 - decode
+            // 2.1 - mtf_decode
             if(reaction & 8)
-                compress(source, 'l');
+                compress(source, file_name, 'l');
             else if(reaction & 4)
-                compress(source, 's');
+                compress(source, file_name, 's');
             else if(reaction & 16)
-                compress(source, 'w');
+                compress(source, file_name, 'w');
         }
     }
 
@@ -122,7 +145,7 @@ int main(int argc,char* argv[]){
 //-------------------------------------------------------------------------
 //__________________________COMPRESS___FUNCTION____________________________
 //-------------------------------------------------------------------------
-int compress(char *src, char flag){
+int compress(char *src, char* file_name, char flag){
     FILE* cmp_file;
     char* time;
     int size_of_file = 0;
@@ -139,7 +162,7 @@ int compress(char *src, char flag){
 
     inf_message("open file successfull",'+',"");
 
-    open_file();
+    open_file(file_name);
     inf_message("create file for writting successfull",'+',"");
     
     if(flag == 'l'){
@@ -169,6 +192,7 @@ int compress(char *src, char flag){
             break;
     }
 
+    file_name[0] = null;
     free_data(flag);
 
     printf("\n");

@@ -155,6 +155,8 @@ int arg_prog(char* message){
         return 8;
     else if(!strcmp( message, "--mtf_decode") || !strcmp( message, "mtf_decode"))
         return 16;
+    else if(!strcmp( message, "--f_name") || !strcmp( message, "f_name"))
+        return 256;
     else if(!strcmp( message, "--exit") || !strcmp( message, "exit")){
         inf_message("exit from program",'c',"");
         getchar();
@@ -162,7 +164,7 @@ int arg_prog(char* message){
     }
     else if(!strcmp( message, "--help") || !strcmp( message, "help")){
         inf_message("this is list of commands (commands are entered sequentially and separately)",'+',"");
-        printf("\t--src (src) - source on file that need compress or transform\n\t--mtf (mtf) - transform file (src) using move-to-front(stack of books)\n\t--mtf_decode (mtf_decode) - decode using simple way with mass\n\t--mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n\t--help (help) - display info about commands\n\t--exit (exit) - exit from programm\n");
+        printf("\t--src (src) - source on file that need compress or transform\n\t--f_name (f_name) - set your own filename\n\t--mtf (mtf) - transform file (src) using move-to-front(stack of books)\n\t--mtf_decode (mtf_decode) - decode using simple way with mass\n\t--mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n\t--help (help) - display info about commands\n\t--exit (exit) - exit from programm\n");
     }
     else
         return 1024;
@@ -203,6 +205,13 @@ int get_time(char* time_tmp){
     strftime(tmp, 3, "%M", tm_info); 
 
     strcat(time_tmp,":");
+    strcat(time_tmp, tmp);
+
+    strftime(tmp, 3, "%S", tm_info); 
+
+    strcat(time_tmp,":");
+    strcat(time_tmp, tmp);
+
     strcat(time_tmp, tmp);
     strcat(time_tmp,"] ");
 

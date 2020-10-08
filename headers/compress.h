@@ -1,4 +1,4 @@
-void open_file();
+void open_file(char* filename);
 void mtf_encode_simple(char byte);
 void mtf_decode_simple(char byte);
 void restore_dict();
