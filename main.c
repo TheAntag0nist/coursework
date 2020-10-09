@@ -37,7 +37,7 @@ int main(int argc,char* argv[]){
     inf_message("start work dt_compress",'+',"");
 
     // read commands
-    if(argc < 2){
+    if(argc < 3){
         inf_message(" wait commands (for more information enter --help or help)",'d',"");
         
         // while not exit command
@@ -65,17 +65,20 @@ int main(int argc,char* argv[]){
             }
 
             // reaction --> starts transform file
-            if((reaction & 4) || (reaction & 8) || (reaction & 16)){
+            if((reaction & 4) || (reaction & 8) || (reaction & 16) || (reaction & 32)){
                 inf_message(source, '+', "source -> ");
 
-                if((reaction & 8) == 8)
+                if(reaction & 8)
                     compress(source, file_name, 'l');
-                else if((reaction & 4) == 4)
+                else if(reaction & 4)
                     compress(source, file_name, 's');
                 
                 if(reaction & 16)
                     compress(source, file_name, 'w');
+                else if(reaction & 32)
+                    compress(source, file_name, 'o');
                 
+                reaction &= ~32;
                 reaction &= ~16;
                 reaction &= ~8;
                 reaction &= ~4;
@@ -109,16 +112,16 @@ int main(int argc,char* argv[]){
 
                 reaction &= ~1;
             }
-        }
 
-        if(reaction & 256){
-            strcpy( file_name,argv[i+1]);
+            if(reaction & 256){
+                strcpy( file_name,argv[i+1]);
 
-            reaction &= ~256;
+                reaction &= ~256;
+            }
         }
 
         // reaction --> starts transform file
-        if((reaction & 4) || (reaction & 8)){
+        if((reaction & 4) || (reaction & 8) || (reaction & 16) || (reaction & 32)){
             inf_message(source, '+', "source -> ");
 
             // priority
@@ -126,13 +129,16 @@ int main(int argc,char* argv[]){
             // 1.1 list
             // 1.2 simple
             // 2 - decode
-            // 2.1 - mtf_decode
+            // 2.1 - mtf_decode_list
+            // 2.2 - mtf_decode
             if(reaction & 8)
                 compress(source, file_name, 'l');
             else if(reaction & 4)
                 compress(source, file_name, 's');
             else if(reaction & 16)
                 compress(source, file_name, 'w');
+            else if(reaction & 32)
+                compress(source, file_name, 'o');
         }
     }
 
@@ -165,7 +171,7 @@ int compress(char *src, char* file_name, char flag){
     open_file(file_name);
     inf_message("create file for writting successfull",'+',"");
     
-    if(flag == 'l'){
+    if(flag == 'l' || flag == 'o'){
         create_list();
         inf_message("successfull create list",'+',"");
     }
@@ -189,7 +195,7 @@ int compress(char *src, char* file_name, char flag){
         else if(flag == 'w')
             mtf_decode_simple(byte);
         else if(flag == 'o')
-            break;
+            mtf_decode_list(byte);
     }
 
     file_name[0] = null;

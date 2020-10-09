@@ -5,4 +5,5 @@ void restore_dict();
 void free_data(char flag);
 void create_list();
 void mtf_encode_list(char byte);
+void mtf_decode_list(char byte);
 void free_list();

@@ -89,7 +89,7 @@ void restore_dict(){
 void free_data(char flag){
     restore_dict();
 
-    if(flag == 'l')
+    if(flag == 'l' || flag == 'o')
         free_list();
     fclose(output);
 }
@@ -140,8 +140,32 @@ void mtf_encode_list(char byte){
     // change first elem
     first_elem = current;
 
-    printf("\t%d\t%d\n", current -> value, i);
+    printf(" char = %d\t num =%d\n", current -> value, i);
     fprintf(output,"%c" ,i);
+}
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+void mtf_decode_list(char byte){
+    byte_node* current = first_elem;
+    int i = 0;
+
+    // find char in i position
+    while((byte != (char) i) &&  (i < SIZE_DICT)){
+        current = current -> next;
+        ++i;
+    }
+
+    // replace elem on front
+    if(i != 0){
+        cut_elem(current);
+        push(current, first_elem);
+    }
+
+    // change first elem
+    first_elem = current;
+
+    printf(" num = %d\t char = %d\n", i, current -> value);
+    fprintf(output,"%c",current -> value);
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
