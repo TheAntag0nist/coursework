@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h> 
 #include "headers/message.h"
 #include "headers/compress.h"
 //-------------------------------------------------------------------------
@@ -37,7 +38,7 @@ int main(int argc,char* argv[]){
     inf_message("start work dt_compress",'+',"");
 
     // read commands
-    if(argc < 3){
+    if(argc < 4){
         inf_message(" wait commands (for more information enter --help or help)",'d',"");
         
         // while not exit command
@@ -143,10 +144,13 @@ int main(int argc,char* argv[]){
     }
 
     inf_message("free memory", '+', "");
-    printf("==================================");
+    printf("================================\nPress any key...");
+    _flushall();
+    getchar();
     // freee mem
     free(source);
     free(command);
+    return 0;
 }
 //-------------------------------------------------------------------------
 //__________________________COMPRESS___FUNCTION____________________________
@@ -156,6 +160,13 @@ int compress(char *src, char* file_name, char flag){
     char* time;
     int size_of_file = 0;
     char byte;
+
+    //================
+    //___DEBUG_INFO___
+    clock_t start,
+            end;
+    double seconds;
+    //=================
 
     // allocate memory for time
     time = errch_malloc(TIME_SIZE);
@@ -180,6 +191,9 @@ int compress(char *src, char* file_name, char flag){
     get_time(time);
     inf_message(time,'t', "");
 
+    // save time_of_start
+    start = clock();
+
     // write bytes from file in console
     while(fread( &byte, sizeof(byte), 1, cmp_file) != 0){
         printf("\tbyte = %d\t",byte);
@@ -198,10 +212,19 @@ int compress(char *src, char* file_name, char flag){
             mtf_decode_list(byte);
     }
 
+    // save time_of_end
+    end = clock();
+    seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    sprintf(time, "%f", seconds);
+    inf_message(time,'t',"time of work --> ");
+
+    // display current time
+    get_time(time);
+    inf_message(time,'t', "");
+
     file_name[0] = null;
     free_data(flag);
-
-    printf("\n");
+    
     inf_message("successful transform",'+',"");
     // end programm
     free(time);

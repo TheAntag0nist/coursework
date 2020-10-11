@@ -6,4 +6,5 @@ typedef struct byte_node{
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 void cut_elem(byte_node* elem);
-void push(byte_node* elem,byte_node* head);
+void push(byte_node* elem,byte_node* head, char begin_end);
+byte_node* create_node();

@@ -142,7 +142,7 @@ void* errch_malloc(unsigned int mem_size){
 //-------------------------------------------------------------------------
 int arg_prog(char* message){
     if(!strcmp(message,"-version")){
-        inf_message("  dt_compress (DT_COMPRESS) v1.1.8\n\t\t Project for encoding, decoding and archive data.",'d',"");
+        inf_message("  dt_compress (DT_COMPRESS) v1.2.3\n\t\t Project for encoding, decoding and archive data.",'d',"");
         return 0;
     }
     else if(!strcmp( message, "--src") || !strcmp( message, "src"))
@@ -161,12 +161,54 @@ int arg_prog(char* message){
         return 256;
     else if(!strcmp( message, "--exit") || !strcmp( message, "exit")){
         inf_message("exit from program",'c',"");
-        getchar();
         return 512; 
     }
     else if(!strcmp( message, "--help") || !strcmp( message, "help")){
         inf_message("this is list of commands (commands are entered sequentially and separately)",'+',"");
-        printf("\t--src (src) - source on file that need compress or transform\n\t--f_name (f_name) - set your own filename\n\t--mtf (mtf) - transform file (src) using move-to-front(stack of books)\n\t--mtf_decode (mtf_decode) - decode using simple way with mass\n\t--mtf_decode_list (mtf_decode_list) - decode using list\n\t--mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n\t--help (help) - display info about commands\n\t--exit (exit) - exit from programm\n");
+        
+        #ifdef _WIN32
+            SetColor(LightGreen);
+        #endif
+
+        printf("\n\tGLOBAL_COMMANDS_ZONE\n");
+
+        #ifdef _WIN32
+            SetColor(White);
+        #endif
+
+        printf("\t--src (src) - source on file that need compress or transform\n");
+        printf("\t--f_name (f_name) - set your own filename\n");
+        printf("\t--help (help) - display info about commands\n");
+        printf("\t--exit (exit) - exit from programm\n");
+
+        #ifdef _WIN32
+            SetColor(LightGreen);
+        #endif
+
+        printf("\n\tSIMPLE_MTF_ZONE\n");
+
+        #ifdef _WIN32
+            SetColor(White);
+        #endif
+
+        printf("\t--mtf (mtf) - transform file (src) using move-to-front(stack of books)\n");
+        printf("\t--mtf_decode (mtf_decode) - decode using simple way with mass\n");
+
+        #ifdef _WIN32
+            SetColor(LightGreen);
+        #endif
+
+        printf("\n\tLIST_MTF_ZONE:\n");
+
+        #ifdef _WIN32
+            SetColor(White);
+        #endif
+
+        printf("\t--mtf_list (mtf_list) - transform file (src) using move-to-front(stack of books) with list\n");
+        printf("\t--mtf_decode_list (mtf_decode_list) - decode using list\n");
+
+        printf("\n");
+        return 0;
     }
     else
         return 1024;
@@ -214,8 +256,9 @@ int get_time(char* time_tmp){
     strcat(time_tmp,":");
     strcat(time_tmp, tmp);
 
-    strcat(time_tmp, tmp);
     strcat(time_tmp,"] ");
 
     return 0;
 }
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------

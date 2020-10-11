@@ -101,7 +101,7 @@ void create_list(){
 
     // allocate mem for list
     for( i = 0; i < SIZE_DICT; ++i)
-        list[i] =(byte_node*) malloc(sizeof(byte_node));
+        list[i] = create_node();
 
     // linking elems in list
     for( i = 1; i < SIZE_DICT - 1; ++i){
@@ -134,7 +134,7 @@ void mtf_encode_list(char byte){
     // replace elem on front
     if(i != 0){
         cut_elem(current);
-        push(current, first_elem);
+        push(current, first_elem, 'b');
     }
 
     // change first elem
@@ -158,7 +158,7 @@ void mtf_decode_list(char byte){
     // replace elem on front
     if(i != 0){
         cut_elem(current);
-        push(current, first_elem);
+        push(current, first_elem, 'b');
     }
 
     // change first elem
