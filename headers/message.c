@@ -141,7 +141,7 @@ void* errch_malloc(unsigned int mem_size){
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 int arg_prog(char* message){
-    if(!strcmp(message,"-version")){
+    if(!strcmp(message,"--version") || !strcmp(message,"version")){
         inf_message("  dt_compress (DT_COMPRESS) v1.2.3\n\t\t Project for encoding, decoding and archive data.",'d',"");
         return 0;
     }
