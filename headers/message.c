@@ -9,7 +9,9 @@
 #include <string.h>
 
 #define SIZE_MESS 128
-
+//-------------------------------------------------------------------------
+//__________________________________COLORS_________________________________
+//-------------------------------------------------------------------------
 // ONLY WINDOWS VERSION
 #ifdef _WIN32
 enum ConsoleColor {
@@ -157,6 +159,8 @@ int arg_prog(char* message){
         return 16;
     else if(!strcmp( message, "--mtf_decode_list") || !strcmp( message, "mtf_decode_list"))
         return 32;
+    else if(!strcmp( message, "--show_progress") || !strcmp( message, "show_progress"))
+        return 64;
     else if(!strcmp( message, "--f_name") || !strcmp( message, "f_name"))
         return 256;
     else if(!strcmp( message, "--exit") || !strcmp( message, "exit")){
@@ -178,6 +182,8 @@ int arg_prog(char* message){
 
         printf("\t--src (src) - source on file that need compress or transform\n");
         printf("\t--f_name (f_name) - set your own filename\n");
+        printf("\t--show_progress (show_progress) - set flag 1 or 0 (1 as true, 0 as false) for showing progress bar\n");
+        printf("\t--system (system) - command for using system command\n");
         printf("\t--help (help) - display info about commands\n");
         printf("\t--exit (exit) - exit from programm\n");
 
@@ -210,8 +216,12 @@ int arg_prog(char* message){
         printf("\n");
         return 0;
     }
-    else
+    else if(!strcmp( message, "--system") || !strcmp( message, "system"))
         return 1024;
+    else if(!strcmp( message, "--archive") || !strcmp( message, "archive"))
+        return 2048;
+    else
+        return 4096;
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
@@ -259,6 +269,26 @@ int get_time(char* time_tmp){
     strcat(time_tmp,"] ");
 
     return 0;
+}
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+int progress_bar(long int value, long int max_val){
+    int percents;
+    if(max_val > 0)
+        percents =(int) (value * 100 / max_val);
+    int i = percents;
+
+    printf("%3d%% [", percents);
+    for(i; i > 0; i--)
+        printf("#");
+    for(i = percents; i < 100; i++)  
+        printf(".");
+    printf("]");
+
+    for(i = 0; i < 108; ++i)
+        printf("\b");
+
+    return percents;
 }
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------

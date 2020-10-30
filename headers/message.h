@@ -6,3 +6,4 @@ void fatal(char* message);
 void* errch_malloc(unsigned int mem_size);
 int arg_prog(char* message);
 int get_time(char* time_tmp);
+int progress_bar(long int value, long int max_val);
